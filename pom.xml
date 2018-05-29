@@ -5,7 +5,7 @@
 	<groupId>hjin.commons</groupId>
 	<artifactId>commons-mysql</artifactId>
 	<packaging>jar</packaging>
-	<version>1.0.1</version>
+	<version>1.0.2</version>
 	<name>commons-mysql</name>
 	
 	<description>
