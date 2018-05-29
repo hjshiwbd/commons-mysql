@@ -15,6 +15,7 @@ public class PageUtil {
     public static <T> Pager<T> createPager(Integer curtPage, Integer countPerPage) {
         Pager<T> pager = new Pager<T>();
         curtPage = curtPage == null ? 1 : curtPage;
+        countPerPage = countPerPage == null ? 15 : countPerPage;
         pager.setCurtPage(curtPage);
         pager.setCountPerPage(countPerPage);
         return pager;
