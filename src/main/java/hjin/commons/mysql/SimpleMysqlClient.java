@@ -1,19 +1,17 @@
 package hjin.commons.mysql;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import javax.sql.DataSource;
-
+import com.alibaba.fastjson.JSON;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.MapHandler;
 import org.apache.commons.dbutils.handlers.MapListHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.alibaba.druid.support.json.JSONUtils;
+import javax.sql.DataSource;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class SimpleMysqlClient {
 	private Logger logger = LoggerFactory.getLogger(getClass());
@@ -76,7 +74,7 @@ public class SimpleMysqlClient {
 		try {
 			if (logger.isDebugEnabled()) {
 				logger.debug("sql:{}", sql);
-				logger.debug("param:{}", JSONUtils.toJSONString(param));
+				logger.debug("param:{}", JSON.toJSONString(param));
 			}
 			return runner.query(sql, new MapHandler(), param);
 		} catch (SQLException e) {
@@ -97,7 +95,7 @@ public class SimpleMysqlClient {
 		try {
 			if (logger.isDebugEnabled()) {
 				logger.debug("sql:{}", sql);
-				logger.debug("param:{}", JSONUtils.toJSONString(param));
+				logger.debug("param:{}", JSON.toJSONString(param));
 			}
 			return runner.query(sql, new MapListHandler(), param);
 		} catch (SQLException e) {
