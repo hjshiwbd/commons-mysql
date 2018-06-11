@@ -10,6 +10,9 @@
 	
 	<description>
 	---
+	1.0.3
+	修改SimpleMySQLClient中的日志debug bug
+	---
 	1.0.2
 	新增PageUtil
 	---
