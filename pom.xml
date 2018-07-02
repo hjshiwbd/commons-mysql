@@ -5,10 +5,13 @@
 	<groupId>hjin.commons</groupId>
 	<artifactId>commons-mysql</artifactId>
 	<packaging>jar</packaging>
-	<version>1.0.3</version>
+	<version>1.0.4</version>
 	<name>commons-mysql</name>
 	
 	<description>
+    ---
+    1.0.4
+    升级commons-tool,修复sha1加密bug
 	---
 	1.0.3
 	修改SimpleMySQLClient中的日志debug bug
@@ -80,7 +83,7 @@
 		<dependency>
 			<groupId>hjin.commons</groupId>
 			<artifactId>commons-tool</artifactId>
-			<version>1.1.0</version>
+			<version>1.1.2</version>
 		</dependency>
 	</dependencies>
 
