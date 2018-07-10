@@ -9,21 +9,24 @@
 	<name>commons-mysql</name>
 	
 	<description>
-    ---
-    1.0.4
-    升级commons-tool,修复sha1加密bug
-	---
-	1.0.3
-	修改SimpleMySQLClient中的日志debug bug
-	---
-	1.0.2
-	新增PageUtil
-	---
-	1.0.1
-	新增EasyuiUtils
-	---	
-	1.0.0 
-	初始化
+        ---
+        1.1.0
+        升级SimpleMysqlClient,新增常用方法
+        ---
+        1.0.4
+        升级commons-tool,修复sha1加密bug
+        ---
+        1.0.3
+        修改SimpleMySQLClient中的日志debug bug
+        ---
+        1.0.2
+        新增PageUtil
+        ---
+        1.0.1
+        新增EasyuiUtils
+        ---
+        1.0.0
+        初始化
 	</description>
 
 	<properties>
@@ -125,4 +128,17 @@
 			</plugin>
 		</plugins>
 	</build>
+
+    <distributionManagement>
+        <repository>
+            <id>nexus-releases</id>
+            <name>Releases</name>
+            <url>http://dev001.rz:8081/repository/maven-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>nexus-snapshots</id>
+            <name>Snapshots</name>
+            <url>http://dev001.rz:8081/repository/maven-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
 </project>
