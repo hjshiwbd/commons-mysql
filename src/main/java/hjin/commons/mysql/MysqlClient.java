@@ -1,6 +1,7 @@
 package hjin.commons.mysql;
 
 import commons.tool.utils.JsonUtil;
+import org.apache.commons.dbutils.DbUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.ArrayListHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
@@ -10,22 +11,22 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.sql.DataSource;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 /**
- * 通过datasource完成数据库操作
+ * 通过connection完成数据库操作
  */
-public class SimpleMysqlClient {
+public class MysqlClient {
     private Logger logger = LoggerFactory.getLogger(getClass());
 
-    private DataSource dataSource;
-    private Boolean pmdKnownBroken = false;
+    private Connection conn;
 
-    public SimpleMysqlClient(DataSource dataSource) {
-        this.dataSource = dataSource;
+    public MysqlClient(Connection conn) {
+        this.conn = conn;
     }
 
     /**
@@ -40,11 +41,13 @@ public class SimpleMysqlClient {
             logger.debug("sql:{}", sql);
             logger.debug("param:{}", JsonUtil.toJson(param));
         }
-        QueryRunner runner = new QueryRunner(dataSource, pmdKnownBroken);
+        QueryRunner runner = new QueryRunner();
         try {
-            return runner.update(sql, param);
+            return runner.update(conn, sql, param);
         } catch (SQLException e) {
             logger.error("", e);
+        } finally {
+            DbUtils.closeQuietly(conn);
         }
         return 0;
     }
@@ -85,11 +88,13 @@ public class SimpleMysqlClient {
             logger.debug("sql:{}", sql);
             logger.debug("param:{}", JsonUtil.toJson(param));
         }
-        QueryRunner runner = new QueryRunner(dataSource, pmdKnownBroken);
+        QueryRunner runner = new QueryRunner();
         try {
-            return runner.query(sql, new MapHandler(), param);
+            return runner.query(conn, sql, new MapHandler(), param);
         } catch (SQLException e) {
             logger.error("", e);
+        } finally {
+            DbUtils.closeQuietly(conn);
         }
         return null;
     }
@@ -106,11 +111,13 @@ public class SimpleMysqlClient {
             logger.debug("sql:{}", sql);
             logger.debug("param:{}", JsonUtil.toJson(param));
         }
-        QueryRunner runner = new QueryRunner(dataSource, pmdKnownBroken);
+        QueryRunner runner = new QueryRunner();
         try {
-            return runner.query(sql, new MapListHandler(), param);
+            return runner.query(conn, sql, new MapListHandler(), param);
         } catch (SQLException e) {
             logger.error("", e);
+        } finally {
+            DbUtils.closeQuietly(conn);
         }
         return new ArrayList<>();
     }
@@ -131,12 +138,14 @@ public class SimpleMysqlClient {
             logger.debug("param:{}", JsonUtil.toJson(params));
         }
         List<T> list;
-        QueryRunner runner = new QueryRunner(dataSource);
+        QueryRunner runner = new QueryRunner();
         try {
-            list = runner.query(sql, new BeanListHandler<T>(clz), params);
+            list = runner.query(conn, sql, new BeanListHandler<>(clz), params);
         } catch (SQLException e) {
             logger.error("", e);
             throw new RuntimeException(e);
+        } finally {
+            DbUtils.closeQuietly(conn);
         }
         return list;
     }
@@ -182,10 +191,10 @@ public class SimpleMysqlClient {
             logger.debug("sql:{}", sql);
             logger.debug("param:{}", JsonUtil.toJson(params));
         }
-        QueryRunner runner = new QueryRunner(dataSource);
+        QueryRunner runner = new QueryRunner();
         int[] result = {0, 0};
         try {
-            int n = runner.update(sql, params);
+            int n = runner.update(conn, sql, params);
             String idsql = "select LAST_INSERT_ID() LASTINSERTID";
             logger.info(idsql);
             Number lastid = (Number) runner.query(idsql, new MapHandler()).get("LASTINSERTID");
@@ -195,6 +204,8 @@ public class SimpleMysqlClient {
         } catch (Exception e) {
             logger.error("", e);
             throw new RuntimeException(e);
+        } finally {
+            DbUtils.closeQuietly(conn);
         }
         return result;
     }
@@ -212,10 +223,10 @@ public class SimpleMysqlClient {
             logger.debug("sql:{}", sql);
             logger.debug("param:{}", JsonUtil.toJson(params));
         }
-        QueryRunner runner = new QueryRunner(dataSource);
+        QueryRunner runner = new QueryRunner();
         List<Object[]> list;
         try {
-            list = runner.query(sql, new ArrayListHandler(), params);
+            list = runner.query(conn, sql, new ArrayListHandler(), params);
             if (list != null && list.size() == 1) {
                 Object o = list.get(0)[0];
                 if (o instanceof Number) {
@@ -229,15 +240,14 @@ public class SimpleMysqlClient {
         } catch (SQLException e) {
             logger.error("", e);
             throw new RuntimeException(e);
+        } finally {
+            DbUtils.closeQuietly(conn);
         }
     }
 
 
-    public void setDataSource(DataSource dataSource) {
-        this.dataSource = dataSource;
+    public void setConn(Connection conn) {
+        this.conn = conn;
     }
 
-    public void setPmdKnownBroken(Boolean pmdKnownBroken) {
-        this.pmdKnownBroken = pmdKnownBroken;
-    }
 }

@@ -5,10 +5,16 @@
 	<groupId>hjin.commons</groupId>
 	<artifactId>commons-mysql</artifactId>
 	<packaging>jar</packaging>
-	<version>1.0.4</version>
+	<version>1.1.2</version>
 	<name>commons-mysql</name>
 	
 	<description>
+		---
+		1.1.2
+		加入MysqlClient,以conn为驱动
+        ---
+        1.1.1
+        自研的commons系设置为provided
         ---
         1.1.0
         升级SimpleMysqlClient,新增常用方法
@@ -87,6 +93,7 @@
 			<groupId>hjin.commons</groupId>
 			<artifactId>commons-tool</artifactId>
 			<version>1.1.2</version>
+            <scope>provided</scope>
 		</dependency>
 	</dependencies>
 
